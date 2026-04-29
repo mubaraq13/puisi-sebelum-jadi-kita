@@ -14,9 +14,5 @@ Sebuah proyek web kreatif yang menyajikan antologi puisi digital dengan pengalam
 * **Hosting:** [GitHub Pages](https://mubaraq13.github.io/puisi-sebelum-jadi-kita)
 * **Editor:** Visual Studio Code
 
-## 🚀 Cara Menjalankan Secara Lokal
-Jika Anda ingin melihat atau memodifikasi proyek ini di komputer Anda sendiri:
-
-1. Clone repositori ini:
-   ```bash
-   git clone [https://github.com/mubaraq13/puisi-sebelum-jadi-kita.git](https://github.com/mubaraq13/puisi-sebelum-jadi-kita.git)
+## penulis dan pembuat
+* **Mubaraq13:** Puisi yang belum sempat di sampaikan,
