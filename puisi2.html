@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaca Mata Embun Pagi — Sebuah Puisi</title>
+  <nav style="text-align:center;padding:16px;background:rgba(0,0,0,0.3);position:fixed;top:0;left:0;right:0;z-index:100;">
+    <a href="index.html" style="color:#a89f94;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 1</a> | 
+    <a href="puisi2.html" style="color:#a7d1bc;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 2</a> | 
+    <a href="puisi3.html" style="color:#a89f94;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 3</a>
+  </nav>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #0d1411;
+      --bg-soft: #131e19;
+      --text: #e8f0eb;
+      --text-muted: #9bb0a2;
+      --accent: #a7d1bc;
+      --accent-soft: rgba(167, 209, 188, 0.12);
+      --border: rgba(232, 240, 235, 0.07);
+      --blue-cup: #7ba7d1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(1200px 800px at 50% -10%, #1a2a22 0%, var(--bg) 60%);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.95;
+      overflow-x: hidden;
+    }
+
+    #dew-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 110px 24px 140px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.1rem, 5vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+      position: relative;
+      display: inline-block;
+      cursor: default;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(167,209,188,0.3) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      transition: all 0.6s ease;
+      pointer-events: none;
+    }
+
+    h1:hover::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 300;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .story-box {
+      background: linear-gradient(180deg, rgba(19, 30, 25, 0.5) 0%, rgba(19, 30, 25, 0.2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0 30px;
+      margin-bottom: 48px;
+      backdrop-filter: blur(8px);
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 1s ease, opacity 1s ease, padding 1s ease;
+    }
+
+    .story-box.open {
+      max-height: 1000px;
+      opacity: 1;
+      padding: 32px 30px;
+    }
+
+    .story-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-style: italic;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .story-paragraph {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+      margin-bottom: 16px;
+      line-height: 1.9;
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(15px);
+      transition: opacity 1s ease, filter 1s ease, transform 1s ease;
+    }
+
+    .story-box.open .story-paragraph.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+
+    .story-paragraph:last-child {
+      margin-bottom: 0;
+    }
+
+    .story-paragraph strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .poem {
+      background: linear-gradient(180deg, var(--bg-soft) 0%, rgba(19, 30, 25, 0.7) 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 44px 34px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+    }
+
+    .stanza {
+      margin-bottom: 2.5em;
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(25px);
+      transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
+    }
+
+    .stanza.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+
+    .stanza p {
+      font-size: 1.06rem;
+      margin-bottom: 0.45em;
+      font-weight: 300;
+    }
+
+    .stanza p:last-child {
+      margin-bottom: 0;
+    }
+
+    .accent-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .blue-cup {
+      color: var(--blue-cup);
+      font-weight: 400;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 40px;
+      margin-bottom: 52px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.4px;
+    }
+
+    button:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    button.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 90px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      letter-spacing: 1.2px;
+    }
+
+    .slow-mode .stanza,
+    .slow-mode .story-paragraph {
+      transition-duration: 2s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .poem { padding: 30px 22px; }
+      .story-box { padding: 0 20px; }
+      .story-box.open { padding: 24px 20px; }
+      .stanza p, .story-paragraph { font-size: 0.98rem; }
+      .container { padding: 70px 20px 100px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dew-canvas"></canvas>
+  
+  <div class="container">
+    <header>
+      <h1>Kaca Mata Embun Pagi</h1>
+      <p class="subtitle">Semesta kecil di balik teduh matamu</p>
+    </header>
+
+    <article class="poem" id="poem">
+      <div class="stanza">
+        <p>Lensa bening mengurung senyum yang malu-malu</p>
+        <p>Menyembunyikan semesta kecil di balik teduh matamu</p>
+        <p>Langkahmu pelan, tak pernah memaksa waktu</p>
+        <p>Seperti embun jatuh di pucuk mawar yang layu</p>
+      </div>
+
+      <div class="stanza">
+        <p>Manismu tak pernah meminta dipandang rindu</p>
+        <p>Hanya tawa lirih saat kau salah mengeja aku</p>
+        <p>Jilbab lembut kau tata dengan jemari sendu</p>
+        <p>Bersahaja, tapi langit pun betah menunggu</p>
+      </div>
+
+      <div class="stanza">
+        <p>Tatapmu berbisik lebih pelan dari bulu</p>
+        <p>Menghitung bintang sambil kau tuang teh tanpa gula di <span class="blue-cup">cangkir biru</span></p>
+        <p>Tak ada gemerlap, tak ada gaduh menggebu</p>
+        <p>Ada kau saja, dan penatku luruh satu-satu</p>
+      </div>
+
+      <div class="stanza">
+        <p>Andai rindu boleh menjelma wajah berkalbu</p>
+        <p>Ia pasti berkacamata, pipinya semburat malu, dan berjalan pulang bersamamu</p>
+        <p class="accent-text">Gadis itu, kau yang tak pernah tahu</p>
+        <p class="accent-text">Betapa dunia jadi lebih lembut sejak kau singgah di ruang kalbu</p>
+      </div>
+    </article>
+
+    <div class="controls">
+      <button id="toggle-story">Tema Puisi</button>
+      <button id="toggle-dew">Jeda Embun</button>
+      <button id="copy-poem">Salin Puisi</button>
+    </div>
+
+    <div class="story-box" id="storyBox">
+      <h2>Tema dan Makna Puisi</h2>
+      <p class="story-paragraph">Puisi ini lahir dari satu kesadaran sederhana: tidak semua yang indah harus bersuara keras.</p>
+      <p class="story-paragraph"><strong>Tema utamanya adalah keindahan dalam kesederhanaan.</strong> Di tengah dunia yang bising, gadis berkacamata ini hadir tanpa gemerlap. Dia menata jilbabnya pelan, tertawa lirih saat salah mengeja, menuang teh tanpa gula di cangkir biru. Hal-hal kecil yang biasanya terlewat, tapi justru di situlah letak ketenangannya.</p>
+      <p class="story-paragraph"><strong>Tema kedua adalah cinta yang diam-diam.</strong> Narator tidak pernah menyatakan perasaan. Dia hanya mengamati dari jauh. Rindu itu tidak diucapkan, hanya dirasakan. Ia membayangkan rindunya bisa menjelma jadi sosok berkacamata dengan pipi semburat malu, yang berjalan pulang bersamanya. Itu cinta yang tidak menuntut balasan, hanya ingin dekat.</p>
+      <p class="story-paragraph"><strong>Tema terakhir adalah pengaruh halus seseorang.</strong> Gadis itu mungkin tidak sadar, tapi kehadirannya mengubah suasana hati narator. Seperti embun pagi yang menyegarkan mawar yang hampir layu, kehadirannya membuat ruang kalbu yang kering jadi lembut kembali.</p>
+      <p class="story-paragraph">Jadi kalau kamu bertanya kenapa judulnya "Kaca Mata Embun Pagi", jawabannya ada di sana. Kaca mata itu melambangkan cara pandang yang jernih. Embun pagi melambangkan kejujuran dan keteduhan. Dan keduanya bertemu dalam sosok yang sederhana tapi menenangkan, yaitu kamu, si gadis berkacamata </p>
+      <p class="story-paragraph">Semoga puisi ini bisa jadi pengingat kecil bahwa keindahan itu tidak harus berteriak. Kadang, ia hanya perlu hadir dengan lembut, seperti embun pagi yang menyapa daun-daun dengan bisikan sejuknya.</p>
+    </div>
+
+    <footer>
+      <p>pagi yang indah, saat embun paling jujur</p>
+    </footer>
+  </div>
+
+  <script>
+    // 1. Efek Embun Melayang
+    const canvas = document.getElementById('dew-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, dews = [];
+    let isActive = true;
+    let animationId = null;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.scale(dpr, dpr);
+    }
+
+    class Dew {
+      constructor() {
+        this.reset();
+        this.y = Math.random() * height;
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = -10;
+        this.size = Math.random() * 3 + 1;
+        this.speed = Math.random() * 0.8 + 0.3;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.wobble = Math.random() * 2;
+        this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+      }
+      update() {
+        this.y += this.speed;
+        this.x += Math.sin(this.y * this.wobbleSpeed) * this.wobble * 0.3;
+        if (this.y > height + 10) this.reset();
+      }
+      draw() {
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+        gradient.addColorStop(0, `rgba(232, 240, 235, ${this.opacity})`);
+        gradient.addColorStop(1, `rgba(167, 209, 188, 0)`);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+    }
+
+    function initDew() {
+      dews = [];
+      const count = width < 600 ? 40 : 80;
+      for (let i = 0; i < count; i++) {
+        dews.push(new Dew());
+      }
+    }
+
+    function animate() {
+      if (!isActive) {
+        cancelAnimationFrame(animationId);
+        ctx.clearRect(0, 0, width, height);
+        return;
+      }
+      ctx.clearRect(0, 0, width, height);
+      dews.forEach(dew => {
+        dew.update();
+        dew.draw();
+      });
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // 2. Animasi Bait Puisi: Blur ke Fokus
+    const stanzaObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 150);
+        }
+      });
+    }, { threshold: 0.25 });
+
+    document.querySelectorAll('.stanza').forEach(stanza => {
+      stanzaObserver.observe(stanza);
+    });
+
+    // 3. Animasi Penjelasan Tema: Muncul per paragraf
+    const storyParagraphs = document.querySelectorAll('.story-paragraph');
+    const storyObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 400);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    storyParagraphs.forEach(p => {
+      storyObserver.observe(p);
+    });
+
+    // 4. Kontrol Tombol
+    let slowMode = false;
+    
+    document.getElementById('toggle-story').addEventListener('click', (e) => {
+      const storyBox = document.getElementById('storyBox');
+      storyBox.classList.toggle('open');
+      e.target.textContent = storyBox.classList.contains('open') ? 'Sembunyikan Tema' : 'Tema Puisi';
+      e.target.classList.toggle('active');
+    });
+
+    document.getElementById('toggle-dew').addEventListener('click', (e) => {
+      isActive = !isActive;
+      e.target.textContent = isActive ? 'Jeda Embun' : 'Turunkan Embun';
+      e.target.classList.toggle('active');
+      if (isActive) {
+        animate();
+      } else {
+        cancelAnimationFrame(animationId);
+        ctx.clearRect(0, 0, width, height);
+      }
+    });
+
+    document.getElementById('copy-poem').addEventListener('click', () => {
+      const text = document.getElementById('poem').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Puisi sudah disalin. Semoga harimu seteduh embun pagi 🌿');
+      }).catch(() => {
+        alert('Gagal salin. Coba select manual ya');
+      });
+    });
+
+    // Init
+    window.addEventListener('resize', () => {
+      resize();
+      initDew();
+    });
+    resize();
+    initDew();
+    animate();
+  </script>
+</body>
+</html>
