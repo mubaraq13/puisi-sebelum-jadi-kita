@@ -1,4 +1,4 @@
-# 3 Puisi di balik satu rasa
+# 2 Puisi di balik satu rasa
 
 Sebuah proyek web kreatif yang menyajikan antologi puisi digital dengan pengalaman visual yang interaktif. Proyek ini dibangun untuk mendokumentasikan karya tulis dalam format yang lebih modern dan dapat diakses oleh siapa saja melalui peramban web.
 
