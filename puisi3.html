@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cerita di Kala Hujan</title>
+<nav style="text-align:center;padding:16px;background:rgba(0,0,0,0.4);position:fixed;top:0;left:0;right:0;z-index:100;">
+  <a href="index.html" style="color:#a6b3c9;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 1</a> | 
+  <a href="puisi2.html" style="color:#a6b3c9;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 2</a> | 
+  <a href="puisi3.html" style="color:#ffb86b;text-decoration:none;margin:0 12px;font-size:0.9rem;">Puisi 3</a>
+</nav>
+<style>
+  :root {
+    --bg: #0a0f1c;
+    --card: rgba(255, 255, 255, 0.06);
+    --accent: #ffb86b;
+    --text: #e8eef7;
+    --muted: #a6b3c9;
+  }
+  
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: radial-gradient(1200px 800px at 20% 10%, #1a2235 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Georgia, serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  
+  /* Efek hujan */
+  .rain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  .rain-drop {
+    position: absolute;
+    width: 1px; height: 20px;
+    background: linear-gradient(transparent, #6b8bbf);
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    to { transform: translateY(100vh); opacity: 0; }
+  }
+  
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 100px 24px 100px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.3s forwards;
+  }
+  .title h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+  .title .sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+  
+  .poem-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  
+  .line {
+    margin: 18px 0;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards;
+  }
+  
+  .line.highlight {
+    color: var(--accent);
+    font-style: italic;
+  }
+  
+  .separator {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 32px 0;
+    opacity: 0.4;
+  }
+  
+  .glow {
+    position: fixed;
+    bottom: -100px; right: -100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Delay animasi per baris */
+  .line:nth-child(1) { animation-delay: 0.5s; }
+  .line:nth-child(2) { animation-delay: 0.7s; }
+  .line:nth-child(3) { animation-delay: 0.9s; }
+  .line:nth-child(4) { animation-delay: 1.1s; }
+  /* dst... lanjut di JS */
+  
+  @media (max-width: 480px) {
+    .container { padding: 40px 18px 80px; }
+    .poem-card { padding: 28px 22px; }
+    .line { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="rain" id="rain"></div>
+  <div class="glow"></div>
+  
+  <div class="container">
+    <div class="title">
+      <h1>Cerita di kala Hujan </h1>
+      <div class="sub">Sebuah pulang yang tidak berisik</div>
+    </div>
+    
+    <div class="poem-card" id="poem"></div>
+  </div>
+
+<script>
+const poemText = [
+  "Hujan di Labuhanhaji jatuh serupa bisik",
+  "Mengantar kita pulang, usai tugas sekolah yang belum selesai.",
+  "Baju hitammu basah, merapat lembut di bahu",
+  "dan tiap rinainya kusimpan sebagai rindu",
+  "",
+  "Motor melaju perlahan, seolah menahan waktu",
+  "Sebab di punggungku kau bersandar, meneduhkan kalbu",
+  "Kita singgah sejenak di bawah terpal biru",
+  "Menjemput hangat dari wajan abang gorengan yang setia menunggu",
+  "",
+  "Sebungkus bakwan kita bagi dalam diam",
+  "Ujung jemari bersua, dunia mendadak benderang",
+  "Kau berbisik, “Hujan paling jujur kalau begini”",
+  "Aku mengangguk, menyembunyikan debar yang diam-diam meninggi",
+  "",
+  "Di pelataran gedung, ibumu menanti bersenyuman heran",
+  "Keningnya berlipat, menyimpan tanya yang belum runtuh",
+  "Kutuntun kau turun, lalu kurengkuh tangan ibumu",
+  "Kusalamkan dalam, masih tersisa dingin di jemariku",
+  "",
+  "Ibumu menyambut, namun matanya menyimpan heran",
+  "Menakar hujan, baju hitam, dan aroma gorengan",
+  "Lalu lirih ia bertanya, di antara harap dan ragu:",
+  "“Apakah ini benaran, Nak? Ini benar?”",
+  "",
+  "Aku menunduk, tak pandai merangkai janji",
+  "Sebab kasih kadang tak perlu diucap tinggi-tinggi",
+  "Cukup ibumu tahu: putrinya pulang terjaga",
+  "Oleh hujan, oleh doa, dan oleh lelaki yang menjaga rasa",
+  "",
+  "Aku pamit tanpa kata yang muluk",
+  "Biar waktu yang menjawab resah di mata ibumu",
+  "Sebab romansa yang sejati tahu caranya menanti",
+  "Tahu caranya pulang, meski hanya sampai di peluk pintu"
+];
+
+const poemEl = document.getElementById('poem');
+poemText.forEach((line, i) => {
+  if (line === "") {
+    poemEl.innerHTML += '<div class="separator"></div>';
+    return;
+  }
+  const div = document.createElement('div');
+  div.className = 'line';
+  if (line.includes('“') || line.includes('”')) div.classList.add('highlight');
+  div.style.animationDelay = (0.5 + i * 0.15) + 's';
+  div.textContent = line;
+  poemEl.appendChild(div);
+});
+
+// Rain animation setup
+const rainEl = document.getElementById('rain');
+for (let i = 0; i < 100; i++) {
+  const drop = document.createElement('div');
+  drop.className = 'rain-drop';
+  drop.style.left = Math.random() * 100 + '%';
+  drop.style.top = Math.random() * -100 + 'px';
+  drop.style.animationDuration = (2 + Math.random() * 1) + 's';
+  drop.style.animationDelay = Math.random() * 2 + 's';
+  rainEl.appendChild(drop);
+}
+</script>
+</body>
+</html>
